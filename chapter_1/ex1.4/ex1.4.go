@@ -1,36 +1,62 @@
 package main
 
-import (
+import ( 
+	"bufio"
 	"fmt"
-	"io/ioutil"
 	"os"
-	"strings"
 )
 
 func main() {
-	var name string
 	counts := make(map[string]int)
+	location := make(map[string][]string)
+	files := os.Args[1:]
 
-	for _, filename := range os.Args[1:] {
-		name = filename
-		data, err := ioutil.ReadFile(filename)
+	if len(files) == 0 {
+		countLines(os.Stdin, counts, location)
+	} else {
+		for _, arg := range files {
+			file, err := os.Open(arg)
 
-		if err != nil {
-			fmt.Fprintf(os.Stderr, "Duplicate error: %v\n", err)
-			continue
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Duplicate error: %v\n", err)
+				continue
+			} 
+
+			countLines(file, counts, location)
+			file.Close()
 		}
 
-		for _, line := range strings.Split(string(data), "\n") {
-			counts[line]++
-		}
-	}
-
-	for line, n := range counts {
-		// NOTE: line is not empty
-		if line != "" {
+		for line, n := range counts {
 			if n > 1 {
-				fmt.Printf("%s\t%d\t%s\n", name, n, line)
+				fmt.Printf("%d\t%v\t%s\n", n, location[line], line)
 			}
 		}
 	}
+
+}
+
+func isInFiles(expected string, files []string) bool {
+	isInFiles := false;
+	for _, actual := range files {
+		if expected == actual {
+			isInFiles = true
+		}
+	}
+
+	return isInFiles 
+}
+
+func countLines(file *os.File, counts map[string]int, location map[string][]string) {
+	input := bufio.NewScanner(file)
+
+	for input.Scan() {
+		line := input.Text()
+		counts[line]++
+
+		if !isInFiles(file.Name(), location[line]) {
+			location[line] = append(location[line], file.Name())
+		}
+	}
+	// NOTE: ignoring potential erros from input.Err()
+
 }
