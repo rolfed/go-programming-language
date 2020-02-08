@@ -1,0 +1,12 @@
+https://www.google.com
+https://www.facebook.com
+https://www.standard.com
+https://www.vanguard.com
+https://www.yahoo.com
+https://www.dannielrolfe.com
+https://www.pluralsight.com
+https://www.linkedin.com
+https://www.amazon.com
+https://www.alexa.com
+https://www.rei.com
+https://www.gap.com
