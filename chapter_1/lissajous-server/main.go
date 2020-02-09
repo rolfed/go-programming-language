@@ -29,7 +29,7 @@ func main() {
 func handler(w http.ResponseWriter, r *http.Request) {
 	cycles, err := strconv.Atoi(r.FormValue("cycles"))
 
-	if err != nil {
+	if err !=  {
 		fmt.Print("Query param missing \n")
 		cycles = 3
 	}
@@ -39,7 +39,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 func lissajous(out io.Writer, cycles int) {
 	const (
-		// cycles 		= c 			// Number of complete x oscillator revolutions
 		res 	 = 0.001 	// Angular resolution
 		size	 = 100 		// Image canvas colvers [-size..+size]
 		nframes = 64 // Number of animation frames
