@@ -1,15 +1,15 @@
 package main
 
 import (
-	"log"
+	"fmt"
 	"image"
 	"image/color"
 	"image/gif"
 	"io"
+	"log"
 	"math"
 	"math/rand"
 	"net/http"
-	"fmt"
 	"strconv"
 )
 
@@ -18,7 +18,7 @@ var palette = []color.Color{color.White, color.Black}
 const (
 	whiteIndex = 0 // First color in palette
 	blackIndex = 1 // Next color in palette
-) 
+)
 
 func main() {
 	http.HandleFunc("/", handler)
@@ -29,21 +29,21 @@ func main() {
 func handler(w http.ResponseWriter, r *http.Request) {
 	cycles, err := strconv.Atoi(r.FormValue("cycles"))
 
-	if err !=  {
+	if err != nil {
 		fmt.Print("Query param missing \n")
 		cycles = 3
 	}
 
-  lissajous(w, cycles)
+	lissajous(w, cycles)
 }
 
 func lissajous(out io.Writer, cycles int) {
 	const (
-		res 	 = 0.001 	// Angular resolution
-		size	 = 100 		// Image canvas colvers [-size..+size]
-		nframes = 64 // Number of animation frames
-		delay = 0 	// Delay between frames in 10ms units
-	) 
+		res     = 0.001 // Angular resolution
+		size    = 100   // Image canvas colvers [-size..+size]
+		nframes = 64    // Number of animation frames
+		delay   = 0     // Delay between frames in 10ms units
+	)
 
 	freq := rand.Float64() * 3.0 // Relative frequency of y oscillator
 	anim := gif.GIF{LoopCount: nframes}
